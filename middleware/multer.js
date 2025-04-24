@@ -8,8 +8,13 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    const fileName = Date.now() + ext;
-    cb(null, fileName);
+    const whiteList = [".png", ".jpg", ".jpeg", ".webp"];
+    if (ext.includes(whiteList)) {
+      const fileName = Date.now() + ext;
+      cb(null, fileName);
+    } else {
+      cb(new Error("you can only upload images"));
+    }
   },
 });
 const uploadFile = multer({
